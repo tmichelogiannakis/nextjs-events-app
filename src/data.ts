@@ -1,4 +1,6 @@
-const DUMMY_EVENTS = [
+import Event from './types/event';
+
+const DUMMY_EVENTS: Event[] = [
   {
     id: 'e1',
     title: 'Programming for everyone',
@@ -31,11 +33,11 @@ const DUMMY_EVENTS = [
   }
 ];
 
-export const getFeaturedEvents = () => {
+export const getFeaturedEvents = (): Event[] => {
   return DUMMY_EVENTS.filter(event => event.isFeatured);
 };
 
-export const getAllEvents = () => {
+export const getAllEvents = (): Event[] => {
   return DUMMY_EVENTS;
 };
 
@@ -45,17 +47,15 @@ export const getFilteredEvents = ({
 }: {
   year: number;
   month: number;
-}) => {
-  let filteredEvents = DUMMY_EVENTS.filter(event => {
+}): Event[] => {
+  return DUMMY_EVENTS.filter(event => {
     const eventDate = new Date(event.date);
     return (
       eventDate.getFullYear() === year && eventDate.getMonth() === month - 1
     );
   });
-
-  return filteredEvents;
 };
 
-export const getEventById = (id: string) => {
+export const getEventById = (id: string): Event | undefined => {
   return DUMMY_EVENTS.find(event => event.id === id);
 };

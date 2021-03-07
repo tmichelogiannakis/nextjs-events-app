@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import theme from '../theme';
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <ChakraProvider resetCSS theme={theme}>
       <Head>

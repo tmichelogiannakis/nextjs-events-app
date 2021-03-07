@@ -8,9 +8,7 @@ module.exports = {
   extends: [
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'prettier/react',
-    'prettier/@typescript-eslint'
+    'prettier'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -23,17 +21,9 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'prettier'],
   rules: {
-    'no-use-before-define': [0],
-    '@typescript-eslint/no-use-before-define': [1],
-    'prettier/prettier': 'error',
-    'react/jsx-props-no-spreading': 'off',
-    'arrow-body-style': [1],
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: ['**/*.test.tsx']
-      }
-    ]
+    'react/react-in-jsx-scope': 'off',
+    'no-use-before-define': ['warn'],
+    'no-console': ['warn', { allow: ['warn', 'error'] }]
   },
   settings: {
     react: { version: 'detect' }

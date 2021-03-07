@@ -29,8 +29,6 @@ const EventListItem = ({ event }: EventListItemProps): JSX.Element => {
 
   const theme = useTheme();
 
-  console.log({ theme });
-
   return (
     <ListItem
       borderRadius="md"

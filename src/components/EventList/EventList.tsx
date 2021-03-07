@@ -1,4 +1,3 @@
-import React from 'react';
 import { List } from '@chakra-ui/react';
 import EventListItem from './EventListItem';
 import Event from '../../types/event';

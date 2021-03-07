@@ -1,4 +1,3 @@
-import React from 'react';
 import { Container, Heading } from '@chakra-ui/react';
 import EventList from '../components/EventList/EventList';
 import { getFeaturedEvents } from '../data';
