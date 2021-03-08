@@ -23,8 +23,8 @@ module.exports = {
   rules: {
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
-    'no-use-before-define': ['warn'],
-    'no-console': ['warn', { allow: ['warn', 'error'] }]
+    'no-use-before-define': ['error'],
+    'no-console': ['error', { allow: ['warn', 'error'] }]
   },
   settings: {
     react: { version: 'detect' }

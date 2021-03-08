@@ -1,3 +1,4 @@
+import { SyntheticEvent, useRef } from 'react';
 import {
   Box,
   BoxProps,
@@ -7,7 +8,6 @@ import {
   Button,
   Select
 } from '@chakra-ui/react';
-import React, { useRef } from 'react';
 
 type EventsSearchProps = BoxProps & {
   onSearch: (year: number, month: number) => void;
@@ -17,17 +17,18 @@ const EventsSearch = ({
   onSearch,
   ...others
 }: EventsSearchProps): JSX.Element => {
-  const yearInputRef = useRef<any>();
-  const monthInputRef = useRef<any>();
+  const yearInputRef = useRef<HTMLSelectElement | null>(null);
+  const monthInputRef = useRef<HTMLSelectElement | null>(null);
 
-  const handleSubmit = (event: React.SyntheticEvent) => {
+  const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
     const year = yearInputRef.current?.value;
     const month = monthInputRef.current?.value;
     if (year && month) {
-      onSearch(year, month);
+      onSearch(+year, +month);
     }
   };
+
   return (
     <Box
       as="form"

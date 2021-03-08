@@ -23,8 +23,6 @@ const EventDetailPage = (): JSX.Element => {
 
   const theme = useTheme();
 
-  console.log({ theme });
-
   const event: Event | undefined = getEventById(eventId as string);
 
   if (!event) {
