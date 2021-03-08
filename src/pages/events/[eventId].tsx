@@ -119,7 +119,7 @@ const EventDetailPage = (): JSX.Element => {
         marginTop="32"
         color={theme.colors.gray[600]}
       >
-        <Text as="p" lineHeight="normal">
+        <Text as="p" lineHeight="normal" textAlign="center">
           {description}
         </Text>
       </Container>

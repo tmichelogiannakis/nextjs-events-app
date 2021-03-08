@@ -18,5 +18,3 @@ const HomePage = (): JSX.Element => {
 };
 
 export default HomePage;
-
-/* maxW="container.lg" paddingY={4} */
