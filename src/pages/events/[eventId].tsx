@@ -1,6 +1,9 @@
+import { useRouter } from 'next//router';
+import Link from 'next/link';
 import {
   Alert,
   Box,
+  Button,
   Container,
   Flex,
   Heading,
@@ -8,7 +11,6 @@ import {
   Text,
   useTheme
 } from '@chakra-ui/react';
-import { useRouter } from 'next//router';
 import AddressIcon from '../../components/icons/AddressIcon';
 import DateIcon from '../../components/icons/DateIcon';
 import Event from '../../types/event';
@@ -25,9 +27,21 @@ const EventDetailPage = (): JSX.Element => {
 
   if (!event) {
     return (
-      <Container maxW="container.sm">
-        <Alert status="warning">
-          <p>No event found!</p>
+      <Container maxW="container.sm" paddingY={4}>
+        <Alert
+          status="warning"
+          display="block"
+          textAlign="center"
+          borderRadius="md"
+        >
+          <Text as="p" marginBottom="2">
+            No event found!
+          </Text>
+          <Link href="/events">
+            <Button as="a" href="/events" colorScheme="teal">
+              Browse All Events
+            </Button>
+          </Link>
         </Alert>
       </Container>
     );
