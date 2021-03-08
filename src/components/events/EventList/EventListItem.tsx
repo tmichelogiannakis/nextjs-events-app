@@ -8,10 +8,10 @@ import {
   ListItem,
   useTheme
 } from '@chakra-ui/react';
-import Event from '../../types/event';
-import AddressIcon from '../Icons/AddressIcon';
-import DateIcon from '../Icons/DateIcon';
-import ArrowRightIcon from '../Icons/ArrowRightIcon';
+import Event from '../../../types/event';
+import AddressIcon from '../../icons/AddressIcon';
+import DateIcon from '../../icons/DateIcon';
+import ArrowRightIcon from '../../icons/ArrowRightIcon';
 
 type EventListItemProps = {
   event: Event;
@@ -36,14 +36,14 @@ const EventListItem = ({ event }: EventListItemProps): JSX.Element => {
       display="flex"
       background="white"
       boxShadow="md"
-      css={{ height: theme.sizes[60] }}
+      height={theme.sizes[60]}
     >
       <Box css={{ width: '40%' }}>
         <Image
           src={`/${image}`}
           alt={title}
+          objectFit="cover"
           css={{
-            'object-fit': 'cover',
             height: '100%',
             width: '100%',
             borderTopLeftRadius: theme.radii.md,

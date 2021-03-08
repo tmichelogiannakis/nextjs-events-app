@@ -1,6 +1,6 @@
 import { List } from '@chakra-ui/react';
 import EventListItem from './EventListItem';
-import Event from '../../types/event';
+import Event from '../../../types/event';
 
 type EventListProps = {
   events: Event[];

@@ -1,5 +1,5 @@
 import { Container, Heading } from '@chakra-ui/react';
-import EventList from '../components/EventList/EventList';
+import EventList from '../components/events/EventList/EventList';
 import { getFeaturedEvents } from '../data';
 
 const HomePage = (): JSX.Element => {
