@@ -4,7 +4,6 @@ import {
   Box,
   Flex,
   Heading,
-  Image,
   ListItem,
   useTheme
 } from '@chakra-ui/react';
@@ -12,6 +11,7 @@ import Event from '../../../types/event';
 import AddressIcon from '../../icons/AddressIcon';
 import DateIcon from '../../icons/DateIcon';
 import ArrowRightIcon from '../../icons/ArrowRightIcon';
+import ImageCover from '../../ui/ImageCover';
 
 type EventListItemProps = {
   event: Event;
@@ -19,13 +19,6 @@ type EventListItemProps = {
 
 const EventListItem = ({ event }: EventListItemProps): JSX.Element => {
   const { id, title, image, date, location } = event;
-
-  const humanReadableDate = new Date(date).toLocaleDateString('en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  });
-  const exploreLink = `/events/${id}`;
 
   const theme = useTheme();
 
@@ -39,16 +32,11 @@ const EventListItem = ({ event }: EventListItemProps): JSX.Element => {
       height={theme.sizes[60]}
     >
       <Box css={{ width: '40%' }}>
-        <Image
+        <ImageCover
           src={`/${image}`}
           alt={title}
-          objectFit="cover"
-          css={{
-            height: '100%',
-            width: '100%',
-            borderTopLeftRadius: theme.radii.md,
-            borderBottomLeftRadius: theme.radii.md
-          }}
+          borderTopLeftRadius={theme.radii.md}
+          borderBottomLeftRadius={theme.radii.md}
         />
       </Box>
       <Flex flexDirection="column" css={{ width: '60%' }} padding={4}>
@@ -59,7 +47,11 @@ const EventListItem = ({ event }: EventListItemProps): JSX.Element => {
           <Flex alignItems="center" mb={1}>
             <DateIcon fontSize="lg" />
             <Box as="time" dateTime={date} pl={2}>
-              {humanReadableDate}
+              {new Date(date).toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              })}
             </Box>
           </Flex>
           <Flex alignItems="center" mb={1}>
@@ -70,11 +62,11 @@ const EventListItem = ({ event }: EventListItemProps): JSX.Element => {
           </Flex>
         </Box>
         <Flex justifyContent="flex-end">
-          <Link href={exploreLink}>
+          <Link href={`/events/${id}`}>
             <Button
               as="a"
-              href={exploreLink}
-              colorScheme="teal"
+              href={`/events/${id}`}
+              colorScheme="primary"
               rightIcon={<ArrowRightIcon />}
             >
               Explore

@@ -16,7 +16,7 @@ const EventsPage = (): JSX.Element => {
   return (
     <Container maxW="container.lg" paddingY={4}>
       <Container maxW="container.sm">
-        <EventsSearch onSearch={handleSearchEvents} />
+        <EventsSearch onSearch={handleSearchEvents} marginBottom="4" />
         <EventList events={events} />
       </Container>
     </Container>

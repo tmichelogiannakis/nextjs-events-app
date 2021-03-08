@@ -6,10 +6,8 @@ const HomePage = (): JSX.Element => {
   const featuredEvents = getFeaturedEvents();
 
   return (
-    <Container maxW="container.lg" paddingY={4}>
-      <Container maxW="container.sm">
-        <EventList events={featuredEvents} />
-      </Container>
+    <Container maxW="container.sm" paddingY={4}>
+      <EventList events={featuredEvents} />
     </Container>
   );
 };

@@ -7,10 +7,10 @@ import {
   Container,
   Flex,
   Heading,
-  Image,
   Text,
   useTheme
 } from '@chakra-ui/react';
+import ImageCover from '../../components/ui/ImageCover';
 import AddressIcon from '../../components/icons/AddressIcon';
 import DateIcon from '../../components/icons/DateIcon';
 import Event from '../../types/event';
@@ -23,6 +23,8 @@ const EventDetailPage = (): JSX.Element => {
 
   const theme = useTheme();
 
+  console.log({ theme });
+
   const event: Event | undefined = getEventById(eventId as string);
 
   if (!event) {
@@ -34,11 +36,9 @@ const EventDetailPage = (): JSX.Element => {
           textAlign="center"
           borderRadius="md"
         >
-          <Text as="p" marginBottom="2">
-            No event found!
-          </Text>
+          <Text marginBottom="2">No event found!</Text>
           <Link href="/events">
-            <Button as="a" href="/events" colorScheme="teal">
+            <Button as="a" href="/events" colorScheme="primary">
               Browse All Events
             </Button>
           </Link>
@@ -49,17 +49,11 @@ const EventDetailPage = (): JSX.Element => {
 
   const { title, image, date, location, description } = event;
 
-  const humanReadableDate = new Date(date).toLocaleDateString('en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  });
-
   return (
     <Box>
       <Box
         css={{
-          background: `linear-gradient(to bottom left, ${theme.colors.teal[500]}, ${theme.colors.teal[800]})`
+          background: `linear-gradient(to bottom left, ${theme.colors.primary[500]}, ${theme.colors.primary[800]})`
         }}
       >
         <Heading
@@ -67,7 +61,7 @@ const EventDetailPage = (): JSX.Element => {
           textAlign="center"
           fontSize="4xl"
           color="white"
-          paddingTop="12"
+          paddingTop="8"
           paddingBottom="32"
           paddingX="4"
         >
@@ -93,16 +87,7 @@ const EventDetailPage = (): JSX.Element => {
             height={theme.sizes[40]}
             width={theme.sizes[40]}
           >
-            <Image
-              src={`/${image}`}
-              alt={title}
-              borderRadius="50%"
-              objectFit="cover"
-              css={{
-                height: '100%',
-                width: '100%'
-              }}
-            />
+            <ImageCover src={`/${image}`} alt={title} borderRadius="50%" />
           </Box>
           <Flex
             flexGrow={1}
@@ -115,7 +100,11 @@ const EventDetailPage = (): JSX.Element => {
                 <DateIcon fontSize="xl" />
               </Box>
               <Box as="time" dateTime={date}>
-                {humanReadableDate}
+                {new Date(date).toLocaleDateString('en-US', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric'
+                })}
               </Box>
             </Box>
             <Box paddingY="1">
@@ -133,9 +122,7 @@ const EventDetailPage = (): JSX.Element => {
         marginTop="32"
         color={theme.colors.gray[600]}
       >
-        <Text as="p" lineHeight="normal" textAlign="center">
-          {description}
-        </Text>
+        <Text textAlign="center">{description}</Text>
       </Container>
     </Box>
   );

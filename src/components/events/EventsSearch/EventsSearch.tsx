@@ -1,5 +1,6 @@
 import {
   Box,
+  BoxProps,
   Flex,
   FormControl,
   FormLabel,
@@ -8,11 +9,14 @@ import {
 } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 
-type EventsSearchProps = {
+type EventsSearchProps = BoxProps & {
   onSearch: (year: number, month: number) => void;
 };
 
-const EventsSearch = ({ onSearch }: EventsSearchProps): JSX.Element => {
+const EventsSearch = ({
+  onSearch,
+  ...others
+}: EventsSearchProps): JSX.Element => {
   const yearInputRef = useRef<any>();
   const monthInputRef = useRef<any>();
 
@@ -29,11 +33,11 @@ const EventsSearch = ({ onSearch }: EventsSearchProps): JSX.Element => {
       as="form"
       boxShadow="md"
       borderRadius="md"
-      marginBottom="8"
       onSubmit={handleSubmit}
+      {...others}
     >
       <Flex p="2">
-        <Box p="3" flex="1 0 35%">
+        <Box p="3" flex="1 1">
           <FormControl id="year" display="flex" alignItems="center">
             <FormLabel marginBottom="0">Year</FormLabel>
             <Select name="year" ref={yearInputRef}>
@@ -42,7 +46,7 @@ const EventsSearch = ({ onSearch }: EventsSearchProps): JSX.Element => {
             </Select>
           </FormControl>
         </Box>
-        <Box p="3" flex="1 0 35%">
+        <Box p="3" flex="1 1">
           <FormControl id="month" display="flex" alignItems="center">
             <FormLabel marginBottom="0">Month</FormLabel>
             <Select name="month" ref={monthInputRef}>
@@ -61,8 +65,8 @@ const EventsSearch = ({ onSearch }: EventsSearchProps): JSX.Element => {
             </Select>
           </FormControl>
         </Box>
-        <Box p="3" flex="1 0 30">
-          <Button type="submit" colorScheme="teal">
+        <Box p="3">
+          <Button type="submit" colorScheme="primary">
             Find Events
           </Button>
         </Box>
