@@ -2,6 +2,7 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import theme from '../theme';
+import Layout from '../components/common/Layout/Layout';
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
@@ -17,7 +18,9 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
         <title>Nextjs App</title>
       </Head>
       <ColorModeScript />
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ChakraProvider>
   );
 };
