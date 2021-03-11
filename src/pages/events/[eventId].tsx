@@ -1,10 +1,6 @@
 import { GetStaticProps } from 'next';
-// import { useRouter } from 'next//router';
-import Link from 'next/link';
 import {
-  Alert,
   Box,
-  Button,
   Container,
   Flex,
   Heading,
@@ -15,7 +11,7 @@ import ImageCover from '../../components/ui/ImageCover';
 import AddressIcon from '../../components/icons/AddressIcon';
 import DateIcon from '../../components/icons/DateIcon';
 import Event from '../../types/event';
-import { getEventById, getAllEventIds } from '../../utils/api.utils';
+import { getEventById, getFeaturedEventsIds } from '../../utils/api.utils';
 
 type EventDetailPageProps = {
   event: Event;
@@ -23,26 +19,6 @@ type EventDetailPageProps = {
 
 const EventDetailPage = ({ event }: EventDetailPageProps): JSX.Element => {
   const theme = useTheme();
-
-  if (!event) {
-    return (
-      <Container maxW="container.sm" paddingY={4}>
-        <Alert
-          status="warning"
-          display="block"
-          textAlign="center"
-          borderRadius="md"
-        >
-          <Text marginBottom="2">No event found!</Text>
-          <Link href="/events">
-            <Button as="a" href="/events" colorScheme="primary">
-              Browse All Events
-            </Button>
-          </Link>
-        </Alert>
-      </Container>
-    );
-  }
 
   const { title, image, date, location, description } = event;
 
@@ -134,11 +110,13 @@ export const getStaticProps: GetStaticProps<
   if (params) {
     const { eventId } = params;
     const event = await getEventById(eventId);
+
     if (event) {
       return {
         props: {
           event
-        }
+        },
+        revalidate: 3600
       };
     }
   }
@@ -149,11 +127,12 @@ export const getStaticProps: GetStaticProps<
 };
 
 export const getStaticPaths = async () => {
-  const eventIds = await getAllEventIds();
+  const eventIds = await getFeaturedEventsIds();
   const paths = eventIds.map(eventId => ({ params: { eventId } }));
+
   return {
     paths,
-    fallback: false
+    fallback: 'blocking'
   };
 };
 

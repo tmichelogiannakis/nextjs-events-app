@@ -18,13 +18,18 @@ export const getAllEvents = async (): Promise<Event[]> => {
   });
 };
 
+export const getAllEventIds = async (): Promise<string[]> => {
+  const events = await getAllEvents();
+  return events.map(event => event.id);
+};
+
 export const getFeaturedEvents = async (): Promise<Event[]> => {
   const events = await getAllEvents();
   return events.filter(event => event.isFeatured);
 };
 
-export const getAllEventIds = async (): Promise<string[]> => {
-  const events = await getAllEvents();
+export const getFeaturedEventsIds = async (): Promise<string[]> => {
+  const events = await getFeaturedEvents();
   return events.map(event => event.id);
 };
 
