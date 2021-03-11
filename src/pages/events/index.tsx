@@ -1,12 +1,17 @@
+import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { Container } from '@chakra-ui/react';
 import EventList from '../../components/events/EventList/EventList';
 import EventsSearch from '../../components/events/EventsSearch/EventsSearch';
-import { getAllEvents } from '../../data';
+import Event from '../../types/event';
+import { getAllEvents } from '../../utils/api.utils';
 
-const EventsPage = (): JSX.Element => {
+type EventsPageProps = {
+  events: Event[];
+};
+
+const EventsPage = ({ events }: EventsPageProps): JSX.Element => {
   const router = useRouter();
-  const events = getAllEvents();
 
   const handleSearchEvents = (year: number, month: number) => {
     const fullPath = `/events/${year}/${month}`;
@@ -21,6 +26,16 @@ const EventsPage = (): JSX.Element => {
       </Container>
     </Container>
   );
+};
+
+export const getStaticProps: GetStaticProps<EventsPageProps> = async () => {
+  const events = await getAllEvents();
+
+  return {
+    props: {
+      events
+    }
+  };
 };
 
 export default EventsPage;
