@@ -1,30 +1,22 @@
-import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { Alert, Box, Button, Container, Heading, Text } from '@chakra-ui/react';
 import EventList from '../../components/events/EventList/EventList';
-import { getFilteredEvents } from '../../data';
+import Event from '../../types/event';
+import { getFilteredEvents } from '../../utils/api.utils';
 
-const FiltredEventsPage = (): JSX.Element => {
-  const {
-    query: { slug }
-  } = useRouter();
+type FiltredEventsPageProps = {
+  invalidFilter?: boolean;
+  events?: Event[];
+  filters?: { numYear: number; numMonth: number };
+};
 
-  if (!slug) {
-    return <Text textAlign="center">Loading...</Text>;
-  }
-
-  const [year, month] = slug;
-  const numYear = +year;
-  const numMonth = +month;
-
-  if (
-    isNaN(numYear) ||
-    isNaN(numMonth) ||
-    numYear > 2030 ||
-    numYear < 2021 ||
-    numMonth < 1 ||
-    numMonth > 12
-  ) {
+const FiltredEventsPage = ({
+  invalidFilter,
+  events,
+  filters
+}: FiltredEventsPageProps): JSX.Element => {
+  if (invalidFilter) {
     return (
       <Container maxW="container.sm" paddingY={4} textAlign="center">
         <Alert display="inline-block" marginBottom="2" width="auto">
@@ -41,12 +33,7 @@ const FiltredEventsPage = (): JSX.Element => {
     );
   }
 
-  const filteredEvents = getFilteredEvents({
-    year: numYear,
-    month: numMonth
-  });
-
-  if (!filteredEvents || filteredEvents.length === 0) {
+  if (!events || events.length === 0) {
     return (
       <Container maxW="container.sm" paddingY={4} textAlign="center">
         <Alert display="inline-block" marginBottom="2" width="auto">
@@ -63,27 +50,76 @@ const FiltredEventsPage = (): JSX.Element => {
     );
   }
 
-  const date = new Date(numYear, numMonth - 1);
+  const date = filters ? new Date(filters.numYear, filters.numMonth - 1) : null;
 
   return (
     <Container maxW="container.sm" paddingY={4}>
       <Box textAlign="center" marginBottom="4">
-        <Heading marginBottom="4">
-          Events in{' '}
-          {date.toLocaleDateString('en-US', {
-            month: 'long',
-            year: 'numeric'
-          })}
-        </Heading>
+        {date && (
+          <Heading marginBottom="4">
+            Events in{' '}
+            {date.toLocaleDateString('en-US', {
+              month: 'long',
+              year: 'numeric'
+            })}
+          </Heading>
+        )}
         <Link href="/events">
           <Button as="a" href="/events" colorScheme="primary">
             Browse All Events
           </Button>
         </Link>
       </Box>
-      <EventList events={filteredEvents} />
+      <EventList events={events} />
     </Container>
   );
+};
+
+export const getServerSideProps: GetServerSideProps<
+  FiltredEventsPageProps,
+  {
+    slug: string[];
+  }
+> = async ({ params }) => {
+  if (params) {
+    const { slug } = params;
+    if (slug && slug.length === 2) {
+      const [year, month] = slug;
+      const numYear = +year;
+      const numMonth = +month;
+
+      if (
+        isNaN(numYear) ||
+        isNaN(numMonth) ||
+        numYear > 2030 ||
+        numYear < 2021 ||
+        numMonth < 1 ||
+        numMonth > 12
+      ) {
+        return {
+          props: {
+            invalidFilter: true
+          }
+        };
+      }
+
+      const events = await getFilteredEvents({
+        year: numYear,
+        month: numMonth
+      });
+
+      return {
+        props: {
+          events,
+          filters: { numYear, numMonth }
+        }
+      };
+    }
+  }
+
+  return {
+    notFound: true
+  };
 };
 
 export default FiltredEventsPage;

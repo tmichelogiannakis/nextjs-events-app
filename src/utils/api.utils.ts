@@ -28,6 +28,23 @@ export const getFeaturedEvents = async (): Promise<Event[]> => {
   return events.filter(event => event.isFeatured);
 };
 
+export const getFilteredEvents = async ({
+  year,
+  month
+}: {
+  year: number;
+  month: number;
+}): Promise<Event[]> => {
+  const events = await getAllEvents();
+
+  return events.filter(event => {
+    const eventDate = new Date(event.date);
+    return (
+      eventDate.getFullYear() === year && eventDate.getMonth() === month - 1
+    );
+  });
+};
+
 export const getFeaturedEventsIds = async (): Promise<string[]> => {
   const events = await getFeaturedEvents();
   return events.map(event => event.id);
