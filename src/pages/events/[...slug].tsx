@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Alert, Box, Button, Container, Heading, Text } from '@chakra-ui/react';
 import EventList from '../../components/events/EventList/EventList';
 import Event from '../../types/event';
-import db from '../../db';
+import { getFiltredEvents } from '../../data/events';
 
 type FiltredEventsPageProps = {
   invalidFilter?: boolean;
@@ -103,18 +103,7 @@ export const getServerSideProps: GetServerSideProps<
         };
       }
 
-      const events: Event[] = db
-        .get('events')
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        .filter(event => {
-          const eventDate = new Date(event.date);
-          return (
-            eventDate.getFullYear() === numYear &&
-            eventDate.getMonth() === numMonth - 1
-          );
-        })
-        .value();
+      const events = getFiltredEvents(numYear, numMonth);
 
       return {
         props: {

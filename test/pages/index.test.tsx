@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { getFeaturedEvents } from '../../src/data';
+import { getFeaturedEvents } from '../data';
 import IndexPage from '../../src/pages/index';
 import { ThemeWrapper } from '../utils';
 

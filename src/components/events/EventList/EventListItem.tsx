@@ -38,7 +38,7 @@ const EventListItem = ({ event }: EventListItemProps): JSX.Element => {
       </Box>
       <Flex flexDirection="column" padding={4} width={['100%', '60%']}>
         <Box flexGrow={1}>
-          <Heading marginBottom={2} fontSize="2xl" fontWeight="normal">
+          <Heading marginBottom={2} fontSize="2xl">
             {title}
           </Heading>
           <Flex alignItems="center" mb={1}>

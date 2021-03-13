@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { SyntheticEvent, useRef, useState } from 'react';
 import {
   Alert,
   Box,
@@ -11,14 +11,14 @@ import {
   useTheme
 } from '@chakra-ui/react';
 
-const NewsletterRegistration = () => {
+const NewsletterRegistration = (): JSX.Element => {
   const theme = useTheme();
 
   const [subscribed, setSubscribed] = useState<boolean>(false);
 
   const emailInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
 
     const email = emailInputRef.current?.value;

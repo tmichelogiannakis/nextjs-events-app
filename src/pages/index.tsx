@@ -3,7 +3,7 @@ import { Container } from '@chakra-ui/react';
 import EventList from '../components/events/EventList/EventList';
 import NewsletterRegistration from '../components/events/NewsletterRegistration/NewsletterRegistration';
 import Event from '../types/event';
-import db from '../db';
+import { getFeaturedEvents } from '../data/events';
 
 type HomePageProps = {
   events: Event[];
@@ -21,7 +21,7 @@ const HomePage = ({ events }: HomePageProps): JSX.Element => {
 export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const events: Event[] = db.get('events').filter({ isFeatured: true }).value();
+  const events = getFeaturedEvents();
 
   return {
     props: {

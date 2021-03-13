@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import db from '../../db';
+import { registerToNewsletter } from '../../data/newsletter';
 
 // From angular email validator
 // https://github.com/angular/angular/blob/master/packages/forms/src/validators.ts
@@ -14,13 +14,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse): void => {
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (!db.get('newsletter').find({ email }).value()) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      db.get('newsletter').push({ email }).write();
-    }
+    registerToNewsletter(email);
 
     res.status(201).json({ message: 'Signed up!' });
   }

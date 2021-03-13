@@ -11,7 +11,7 @@ import ImageRounded from '../../components/ui/ImageRounded';
 import AddressIcon from '../../components/icons/AddressIcon';
 import DateIcon from '../../components/icons/DateIcon';
 import Event from '../../types/event';
-import db from '../../db';
+import { getAllEventsIds, getEvent } from '../../data/events';
 
 type EventDetailPageProps = {
   event: Event;
@@ -54,7 +54,6 @@ const EventDetailPage = ({ event }: EventDetailPageProps): JSX.Element => {
         >
           <Box
             flexShrink={0}
-            border="4px"
             borderColor="white"
             borderRadius="50%"
             height={theme.sizes[40]}
@@ -114,11 +113,9 @@ export const getStaticProps: GetStaticProps<
   }
 > = async ({ params }) => {
   if (params) {
-    const eventId = +params.eventId;
+    const eventId = params.eventId;
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const event: Event = db.get('events').find({ id: eventId }).value();
+    const event = getEvent(+eventId);
 
     if (event) {
       return {
@@ -135,10 +132,17 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
-export const getStaticPaths = async () => {
+export const getStaticPaths = async (): Promise<{
+  paths: {
+    params: {
+      eventId: string;
+    };
+  }[];
+  fallback: string;
+}> => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const eventIds: string[] = db.get('events').map('id').value().map(toString);
+  const eventIds = getAllEventsIds();
 
   const paths = eventIds.map(eventId => ({ params: { eventId } }));
 
