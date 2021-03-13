@@ -1,6 +1,7 @@
 import { GetStaticProps } from 'next';
 import { Container } from '@chakra-ui/react';
 import EventList from '../components/events/EventList/EventList';
+import NewsletterRegistration from '../components/events/NewsletterRegistration/NewsletterRegistration';
 import Event from '../types/event';
 import db from '../db';
 
@@ -11,6 +12,7 @@ type HomePageProps = {
 const HomePage = ({ events }: HomePageProps): JSX.Element => {
   return (
     <Container maxW="container.sm" paddingY={4}>
+      <NewsletterRegistration />
       <EventList events={events} />
     </Container>
   );
