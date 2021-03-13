@@ -7,7 +7,7 @@ import {
   Text,
   useTheme
 } from '@chakra-ui/react';
-import ImageCover from '../../components/ui/ImageCover';
+import ImageRounded from '../../components/ui/ImageRounded';
 import AddressIcon from '../../components/icons/AddressIcon';
 import DateIcon from '../../components/icons/DateIcon';
 import Event from '../../types/event';
@@ -60,7 +60,13 @@ const EventDetailPage = ({ event }: EventDetailPageProps): JSX.Element => {
             height={theme.sizes[40]}
             width={theme.sizes[40]}
           >
-            <ImageCover src={`/${image}`} alt={title} borderRadius="50%" />
+            <ImageRounded
+              src={`/${image}`}
+              alt={title}
+              objectFit="cover"
+              width={320}
+              height={320}
+            />
           </Box>
           <Flex
             flexGrow={1}

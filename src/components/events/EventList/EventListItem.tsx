@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Button,
   Box,
@@ -11,7 +12,6 @@ import Event from '../../../types/event';
 import AddressIcon from '../../icons/AddressIcon';
 import DateIcon from '../../icons/DateIcon';
 import ArrowRightIcon from '../../icons/ArrowRightIcon';
-import ImageCover from '../../ui/ImageCover';
 
 type EventListItemProps = {
   event: Event;
@@ -32,12 +32,7 @@ const EventListItem = ({ event }: EventListItemProps): JSX.Element => {
       height={theme.sizes[60]}
     >
       <Box css={{ width: '40%' }}>
-        <ImageCover
-          src={`/${image}`}
-          alt={title}
-          borderTopLeftRadius={theme.radii.md}
-          borderBottomLeftRadius={theme.radii.md}
-        />
+        <Image src={`/${image}`} width={480} height={480} objectFit="cover" />
       </Box>
       <Flex flexDirection="column" css={{ width: '60%' }} padding={4}>
         <Box flexGrow={1}>
