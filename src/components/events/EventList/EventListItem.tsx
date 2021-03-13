@@ -29,12 +29,14 @@ const EventListItem = ({ event }: EventListItemProps): JSX.Element => {
       display="flex"
       background="white"
       boxShadow="md"
-      height={theme.sizes[60]}
+      flexDirection={['column', 'row']}
+      maxWidth={[theme.sizes[80], '100%']}
+      marginX="auto"
     >
-      <Box css={{ width: '40%' }}>
+      <Box width={['100%', '40%']}>
         <Image src={`/${image}`} width={480} height={480} objectFit="cover" />
       </Box>
-      <Flex flexDirection="column" css={{ width: '60%' }} padding={4}>
+      <Flex flexDirection="column" padding={4} width={['100%', '60%']}>
         <Box flexGrow={1}>
           <Heading marginBottom={2} fontSize="2xl" fontWeight="normal">
             {title}
@@ -49,7 +51,7 @@ const EventListItem = ({ event }: EventListItemProps): JSX.Element => {
               })}
             </Box>
           </Flex>
-          <Flex alignItems="center" mb={1}>
+          <Flex alignItems="center" mb={2}>
             <AddressIcon fontSize="lg" />
             <Box as="address" pl={2}>
               {location}

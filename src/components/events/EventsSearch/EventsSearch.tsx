@@ -6,7 +6,8 @@ import {
   FormControl,
   FormLabel,
   Button,
-  Select
+  Select,
+  useTheme
 } from '@chakra-ui/react';
 
 type EventsSearchProps = BoxProps & {
@@ -17,6 +18,7 @@ const EventsSearch = ({
   onSearch,
   ...others
 }: EventsSearchProps): JSX.Element => {
+  const theme = useTheme();
   const yearInputRef = useRef<HTMLSelectElement | null>(null);
   const monthInputRef = useRef<HTMLSelectElement | null>(null);
 
@@ -35,21 +37,33 @@ const EventsSearch = ({
       boxShadow="md"
       borderRadius="md"
       onSubmit={handleSubmit}
+      maxWidth={[theme.sizes[80], '100%']}
+      margin="auto"
       {...others}
     >
-      <Flex p="2">
-        <Box p="3" flex="1 1">
-          <FormControl id="year" display="flex" alignItems="center">
-            <FormLabel marginBottom="0">Year</FormLabel>
+      <Flex p="2" flexWrap="wrap">
+        <Box p="3" flex={['1 0 100%', '1 1']}>
+          <FormControl
+            id="year"
+            display="flex"
+            alignItems={['left', 'center']}
+            flexDirection={['column', 'row']}
+          >
+            <FormLabel marginBottom={[1, 0]}>Year</FormLabel>
             <Select name="year" ref={yearInputRef}>
               <option value={2021}>2021</option>
               <option value={2022}>2022</option>
             </Select>
           </FormControl>
         </Box>
-        <Box p="3" flex="1 1">
-          <FormControl id="month" display="flex" alignItems="center">
-            <FormLabel marginBottom="0">Month</FormLabel>
+        <Box p="3" flex={['1 0 100%', '1 1']}>
+          <FormControl
+            id="month"
+            display="flex"
+            alignItems={['left', 'center']}
+            flexDirection={['column', 'row']}
+          >
+            <FormLabel marginBottom={[1, 0]}>Month</FormLabel>
             <Select name="month" ref={monthInputRef}>
               <option value="1">January</option>
               <option value="2">February</option>
