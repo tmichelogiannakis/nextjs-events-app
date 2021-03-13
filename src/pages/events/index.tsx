@@ -4,7 +4,7 @@ import { Container } from '@chakra-ui/react';
 import EventList from '../../components/events/EventList/EventList';
 import EventsSearch from '../../components/events/EventsSearch/EventsSearch';
 import Event from '../../types/event';
-import { getAllEvents } from '../../utils/api.utils';
+import db from '../../db';
 
 type EventsPageProps = {
   events: Event[];
@@ -27,8 +27,7 @@ const EventsPage = ({ events }: EventsPageProps): JSX.Element => {
 };
 
 export const getStaticProps: GetStaticProps<EventsPageProps> = async () => {
-  const events = await getAllEvents();
-
+  const events: Event[] = db.get('events').value();
   return {
     props: {
       events

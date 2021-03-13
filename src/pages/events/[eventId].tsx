@@ -11,7 +11,7 @@ import ImageRounded from '../../components/ui/ImageRounded';
 import AddressIcon from '../../components/icons/AddressIcon';
 import DateIcon from '../../components/icons/DateIcon';
 import Event from '../../types/event';
-import { getEventById, getFeaturedEventsIds } from '../../utils/api.utils';
+import db from '../../db';
 
 type EventDetailPageProps = {
   event: Event;
@@ -114,8 +114,11 @@ export const getStaticProps: GetStaticProps<
   }
 > = async ({ params }) => {
   if (params) {
-    const { eventId } = params;
-    const event = await getEventById(eventId);
+    const eventId = +params.eventId;
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const event: Event = db.get('events').find({ id: eventId }).value();
 
     if (event) {
       return {
@@ -133,7 +136,10 @@ export const getStaticProps: GetStaticProps<
 };
 
 export const getStaticPaths = async () => {
-  const eventIds = await getFeaturedEventsIds();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const eventIds: string[] = db.get('events').map('id').value().map(toString);
+
   const paths = eventIds.map(eventId => ({ params: { eventId } }));
 
   return {
