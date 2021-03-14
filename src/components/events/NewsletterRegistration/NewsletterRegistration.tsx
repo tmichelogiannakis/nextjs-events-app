@@ -48,7 +48,7 @@ const NewsletterRegistration = (): JSX.Element => {
           <Text>You have been successfully subscribed to the newsletter!</Text>
         </Alert>
       ) : (
-        <Container maxW={theme.space[80]}>
+        <Container maxW={theme.space[80]} padding="0">
           <Flex as="form" onSubmit={handleSubmit}>
             <Input
               borderRightRadius="0"
@@ -58,7 +58,12 @@ const NewsletterRegistration = (): JSX.Element => {
               aria-label="Your email"
               ref={emailInputRef}
             />
-            <Button type="submit" colorScheme="primary" borderLeftRadius="0">
+            <Button
+              type="submit"
+              colorScheme="primary"
+              borderLeftRadius="0"
+              flexShrink={0}
+            >
               Register
             </Button>
           </Flex>

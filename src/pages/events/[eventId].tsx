@@ -10,6 +10,7 @@ import {
 import ImageRounded from '../../components/ui/ImageRounded';
 import AddressIcon from '../../components/icons/AddressIcon';
 import DateIcon from '../../components/icons/DateIcon';
+import Comments from '../../components/events/Comments/Comments';
 import Event from '../../types/event';
 import { getAllEventsIds, getEvent } from '../../data/events';
 
@@ -20,7 +21,7 @@ type EventDetailPageProps = {
 const EventDetailPage = ({ event }: EventDetailPageProps): JSX.Element => {
   const theme = useTheme();
 
-  const { title, image, date, location, description } = event;
+  const { id, title, image, date, location, description } = event;
 
   return (
     <Box>
@@ -101,6 +102,7 @@ const EventDetailPage = ({ event }: EventDetailPageProps): JSX.Element => {
         color={theme.colors.gray[600]}
       >
         <Text textAlign="center">{description}</Text>
+        <Comments eventId={id} />
       </Container>
     </Box>
   );
@@ -140,12 +142,8 @@ export const getStaticPaths = async (): Promise<{
   }[];
   fallback: string;
 }> => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const eventIds = getAllEventsIds();
-
   const paths = eventIds.map(eventId => ({ params: { eventId } }));
-
   return {
     paths,
     fallback: 'blocking'
