@@ -52,11 +52,13 @@ const EventDetailPage = ({ event }: EventDetailPageProps): JSX.Element => {
           color="white"
           padding="8"
           margin={`-${theme.sizes[24]} auto`}
+          flexDirection={['column', 'row']}
         >
           <Box
             flexShrink={0}
             borderColor="white"
             borderRadius="50%"
+            border="2px"
             height={theme.sizes[40]}
             width={theme.sizes[40]}
           >
@@ -72,7 +74,9 @@ const EventDetailPage = ({ event }: EventDetailPageProps): JSX.Element => {
             flexGrow={1}
             justifyContent="space-between"
             flexDirection="column"
-            paddingLeft="8"
+            paddingLeft={['0', '8']}
+            paddingTop={['4', '0']}
+            textAlign={['center', 'left']}
           >
             <Box paddingY="1">
               <Box paddingY="1">

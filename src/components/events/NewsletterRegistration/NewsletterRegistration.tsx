@@ -1,4 +1,7 @@
-import { SyntheticEvent, useRef, useState } from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import {
   Alert,
   Box,
@@ -7,36 +10,36 @@ import {
   Flex,
   Heading,
   Input,
-  Text,
-  useTheme
+  Text
 } from '@chakra-ui/react';
+import { EMAIL_REGEXP } from '../../../constants';
+
+const schema = yup.object().shape({
+  email: yup.string().email('Invalid email').required('Email is required')
+});
+
+type FormValues = yup.InferType<typeof schema>;
 
 const NewsletterRegistration = (): JSX.Element => {
-  const theme = useTheme();
-
   const [subscribed, setSubscribed] = useState<boolean>(false);
 
-  const emailInputRef = useRef<HTMLInputElement | null>(null);
+  const { register, handleSubmit } = useForm<FormValues>({
+    resolver: yupResolver(schema)
+  });
 
-  const handleSubmit = (event: SyntheticEvent) => {
-    event.preventDefault();
-
-    const email = emailInputRef.current?.value;
-
-    if (email) {
-      fetch('/api/newsletter', {
-        method: 'POST',
-        body: JSON.stringify({ email }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(response => response.json())
-        .then(() => {
-          setSubscribed(true);
-        });
-    }
-  };
+  const onSubmit = handleSubmit(({ email }) => {
+    fetch('/api/newsletter', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(() => {
+        setSubscribed(true);
+      });
+  });
 
   return (
     <Box paddingY={8} paddingX={0} textAlign="center">
@@ -48,15 +51,15 @@ const NewsletterRegistration = (): JSX.Element => {
           <Text>You have been successfully subscribed to the newsletter!</Text>
         </Alert>
       ) : (
-        <Container maxW={theme.space[80]} padding="0">
-          <Flex as="form" onSubmit={handleSubmit}>
+        <Container maxW="sm" padding="0">
+          <Flex as="form" onSubmit={onSubmit}>
             <Input
               borderRightRadius="0"
               type="email"
               id="email"
               placeholder="Your email"
               aria-label="Your email"
-              ref={emailInputRef}
+              ref={register({ required: true, pattern: EMAIL_REGEXP })}
             />
             <Button
               type="submit"

@@ -1,13 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  Button,
-  Box,
-  Flex,
-  Heading,
-  ListItem,
-  useTheme
-} from '@chakra-ui/react';
+import { Button, Box, Flex, Heading, ListItem } from '@chakra-ui/react';
 import Event from '../../../types/event';
 import AddressIcon from '../../icons/AddressIcon';
 import DateIcon from '../../icons/DateIcon';
@@ -20,8 +13,6 @@ type EventListItemProps = {
 const EventListItem = ({ event }: EventListItemProps): JSX.Element => {
   const { id, title, image, date, location } = event;
 
-  const theme = useTheme();
-
   return (
     <ListItem
       borderRadius="md"
@@ -30,7 +21,7 @@ const EventListItem = ({ event }: EventListItemProps): JSX.Element => {
       background="white"
       boxShadow="md"
       flexDirection={['column', 'row']}
-      maxWidth={[theme.sizes[80], '100%']}
+      maxWidth={['sm', '100%']}
       marginX="auto"
     >
       <Box width={['100%', '40%']}>

@@ -31,10 +31,7 @@ const CommentList = ({
             <Text marginBottom="1">{comment.text}</Text>
             <Box>
               <Text textAlign="right" textStyle="italic">
-                By
-                <Box as="address" display="inline">
-                  {comment.name}
-                </Box>
+                By {comment.name}
               </Text>
             </Box>
           </ListItem>

@@ -24,7 +24,7 @@ const Comments = (props: CommentsProps): JSX.Element => {
     setShowComments(prevStatus => !prevStatus);
   };
 
-  const handleAddComment = async (comment: Comment) => {
+  const handleAddComment = async (comment: Comment): Promise<unknown> => {
     const sendComment = async (comment: Comment) => {
       const response = await fetch(`/api/comments/${eventId}`, {
         method: 'POST',
@@ -35,7 +35,7 @@ const Comments = (props: CommentsProps): JSX.Element => {
       });
       return response.json();
     };
-    mutate(`/api/comments/${eventId}`, await sendComment(comment));
+    return mutate(`/api/comments/${eventId}`, await sendComment(comment));
   };
 
   return (

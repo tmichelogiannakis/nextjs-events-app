@@ -6,8 +6,7 @@ import {
   FormControl,
   FormLabel,
   Button,
-  Select,
-  useTheme
+  Select
 } from '@chakra-ui/react';
 
 type EventsSearchProps = BoxProps & {
@@ -18,7 +17,6 @@ const EventsSearch = ({
   onSearch,
   ...others
 }: EventsSearchProps): JSX.Element => {
-  const theme = useTheme();
   const yearInputRef = useRef<HTMLSelectElement | null>(null);
   const monthInputRef = useRef<HTMLSelectElement | null>(null);
 
@@ -37,7 +35,7 @@ const EventsSearch = ({
       boxShadow="md"
       borderRadius="md"
       onSubmit={handleSubmit}
-      maxWidth={[theme.sizes[80], '100%']}
+      maxWidth={['sm', '100%']}
       margin="auto"
       {...others}
     >

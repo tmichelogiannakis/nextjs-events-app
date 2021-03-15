@@ -1,4 +1,6 @@
-import { useRef, SyntheticEvent } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import {
   Box,
   BoxProps,
@@ -7,13 +9,23 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Text,
   Textarea,
   useTheme
 } from '@chakra-ui/react';
 import Comment from '../../../types/comment';
+import { EMAIL_REGEXP } from '../../../constants';
+
+const schema = yup.object().shape({
+  name: yup.string().required('Name is required'),
+  email: yup.string().email('Invalid email').required('Email is required'),
+  text: yup.string().required('Comment is required')
+});
+
+type FormValues = yup.InferType<typeof schema>;
 
 type NewCommentProps = BoxProps & {
-  onAddComment: (comment: Comment) => void;
+  onAddComment: (comment: Comment) => Promise<unknown>;
 };
 
 const NewComment = ({
@@ -21,30 +33,21 @@ const NewComment = ({
   ...otherProps
 }: NewCommentProps): JSX.Element => {
   const theme = useTheme();
-  const emailInputRef = useRef<HTMLInputElement | null>(null);
-  const nameInputRef = useRef<HTMLInputElement | null>(null);
-  const commentInputRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const handleSubmit = (event: SyntheticEvent) => {
-    event.preventDefault();
+  const { register, handleSubmit, errors, reset } = useForm<FormValues>({
+    resolver: yupResolver(schema)
+  });
 
-    const email = emailInputRef.current?.value;
-    const name = nameInputRef.current?.value;
-    const text = commentInputRef.current?.value;
-
-    if (email && name && text) {
-      onAddComment({
-        email,
-        name,
-        text
-      });
-    }
-  };
+  const onSubmit = handleSubmit(data => {
+    onAddComment(data).then(() => {
+      reset();
+    });
+  });
 
   return (
     <Box
       as="form"
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
       paddingX="4"
       paddingY="2"
       borderRadius="md"
@@ -52,7 +55,7 @@ const NewComment = ({
       color="white"
       {...otherProps}
     >
-      <Flex>
+      <Flex flexDirection={['column', 'row']}>
         <FormControl id="year" padding="2">
           <FormLabel htmlFor="email" marginBottom="1">
             Email
@@ -60,7 +63,8 @@ const NewComment = ({
           <Input
             type="email"
             id="email"
-            ref={emailInputRef}
+            name="email"
+            ref={register({ required: true, pattern: EMAIL_REGEXP })}
             css={{
               borderColor: 'white',
               ':hover,:focus': {
@@ -72,6 +76,16 @@ const NewComment = ({
               }
             }}
           />
+          {errors.email && (
+            <Text
+              color={theme.colors.red[300]}
+              textAlign="left"
+              marginTop="1"
+              fontSize="sm"
+            >
+              {errors.email.message}
+            </Text>
+          )}
         </FormControl>
         <FormControl id="name" padding="2">
           <FormLabel htmlFor="name" marginBottom="1">
@@ -80,7 +94,8 @@ const NewComment = ({
           <Input
             type="text"
             id="name"
-            ref={nameInputRef}
+            name="name"
+            ref={register({ required: true })}
             css={{
               borderColor: 'white',
               ':hover,:focus': {
@@ -92,6 +107,16 @@ const NewComment = ({
               }
             }}
           />
+          {errors.name && (
+            <Text
+              color={theme.colors.red[300]}
+              textAlign="left"
+              marginTop="1"
+              fontSize="sm"
+            >
+              {errors.name.message}
+            </Text>
+          )}
         </FormControl>
       </Flex>
       <FormControl id="year" padding="2">
@@ -100,7 +125,8 @@ const NewComment = ({
         </FormLabel>
         <Textarea
           id="comment"
-          ref={commentInputRef}
+          name="text"
+          ref={register({ required: true })}
           display="block"
           css={{
             borderColor: 'white',
@@ -113,6 +139,16 @@ const NewComment = ({
             }
           }}
         />
+        {errors.text && (
+          <Text
+            color={theme.colors.red[300]}
+            textAlign="left"
+            marginTop="1"
+            fontSize="sm"
+          >
+            {errors.text.message}
+          </Text>
+        )}
       </FormControl>
       <Box padding="2">
         <Button
