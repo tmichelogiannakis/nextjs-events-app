@@ -24,18 +24,32 @@ const Comments = (props: CommentsProps): JSX.Element => {
     setShowComments(prevStatus => !prevStatus);
   };
 
-  const handleAddComment = async (comment: Comment): Promise<unknown> => {
-    const sendComment = async (comment: Comment) => {
-      const response = await fetch(`/api/comments/${eventId}`, {
-        method: 'POST',
-        body: JSON.stringify(comment),
-        headers: {
-          'Content-Type': 'application/json'
+  const handleAddComment = async (
+    comment: Comment
+  ): Promise<{ message: string }> => {
+    return fetch(`/api/comments/${eventId}`, {
+      method: 'POST',
+      body: JSON.stringify(comment),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
         }
+        if (response.status === 500) {
+          throw new Error('Something went wrong!');
+        }
+        return response.json().then(data => {
+          throw new Error(data.message || 'Something went wrong!');
+        });
+      })
+      .then(data => {
+        return mutate(`/api/comments/${eventId}`, data).then(() => ({
+          message: 'Your comment was saved!'
+        }));
       });
-      return response.json();
-    };
-    return mutate(`/api/comments/${eventId}`, await sendComment(comment));
   };
 
   return (

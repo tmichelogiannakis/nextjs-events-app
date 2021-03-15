@@ -11,9 +11,14 @@ const handler = (req: NextApiRequest, res: NextApiResponse): void => {
       return;
     }
 
-    registerToNewsletter(email);
-
-    res.status(201).json({ message: 'Signed up!' });
+    try {
+      registerToNewsletter(email);
+      res.status(201).json({
+        message: 'You have been successfully subscribed to the newsletter!'
+      });
+    } catch {
+      res.status(500).json({ message: 'Something wend wrong' });
+    }
   }
 };
 
