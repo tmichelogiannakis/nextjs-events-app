@@ -1,25 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { EMAIL_REGEXP } from '../../constants';
+import nextConnect from '../../next-connect';
+import validate from '../../middlewares/validate';
+import { newsletterSchema } from '../../types/newsletter';
 import { registerToNewsletter } from '../../data/newsletter';
 
-const handler = (req: NextApiRequest, res: NextApiResponse): void => {
-  if (req.method === 'POST') {
+const handler = nextConnect()
+  .use(validate(newsletterSchema))
+  .post(async (req: NextApiRequest, res: NextApiResponse) => {
     const email = req.body.email;
-
-    if (!EMAIL_REGEXP.test(email)) {
-      res.status(422).json({ message: 'Invalid email address.' });
-      return;
-    }
-
-    try {
-      registerToNewsletter(email);
-      res.status(201).json({
-        message: 'You have been successfully subscribed to the newsletter!'
-      });
-    } catch {
-      res.status(500).json({ message: 'Something wend wrong' });
-    }
-  }
-};
+    registerToNewsletter(email);
+    res.status(201).json({
+      message: 'You have been successfully subscribed to the newsletter!'
+    });
+  });
 
 export default handler;

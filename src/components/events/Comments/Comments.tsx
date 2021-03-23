@@ -3,7 +3,7 @@ import { Box, Button, Container } from '@chakra-ui/react';
 import useSWR, { mutate } from 'swr';
 import CommentList from './CommentList';
 import NewComment from './NewComment';
-import Comment from '../../../types/comment';
+import CommentType from '../../../types/comment';
 
 type CommentsProps = {
   eventId: number;
@@ -14,7 +14,7 @@ const Comments = (props: CommentsProps): JSX.Element => {
 
   const [showComments, setShowComments] = useState(false);
 
-  const { data } = useSWR(`/api/comments/${eventId}`);
+  const { data } = useSWR(`/api/${eventId}/comments`);
 
   const comments = useMemo(() => {
     return data?.comments;
@@ -25,9 +25,9 @@ const Comments = (props: CommentsProps): JSX.Element => {
   };
 
   const handleAddComment = async (
-    comment: Comment
+    comment: CommentType
   ): Promise<{ message: string }> => {
-    return fetch(`/api/comments/${eventId}`, {
+    return fetch(`/api/${eventId}/comments`, {
       method: 'POST',
       body: JSON.stringify(comment),
       headers: {

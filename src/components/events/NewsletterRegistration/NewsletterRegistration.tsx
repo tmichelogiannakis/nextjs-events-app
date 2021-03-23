@@ -1,6 +1,6 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import {
   Box,
   Button,
@@ -10,27 +10,19 @@ import {
   Input,
   useToast
 } from '@chakra-ui/react';
-import { EMAIL_REGEXP } from '../../../constants';
-
-const schema = yup.object().shape({
-  email: yup.string().email('Invalid email').required('Email is required')
-});
-
-type FormValues = yup.InferType<typeof schema>;
+import NewsletterType, { newsletterSchema } from '../../../types/newsletter';
 
 const NewsletterRegistration = (): JSX.Element => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isSubmitted }
-  } = useForm<FormValues>({
-    resolver: yupResolver(schema)
+  const { register, handleSubmit, reset } = useForm<NewsletterType>({
+    resolver: yupResolver(newsletterSchema)
   });
 
   const toast = useToast();
 
+  const [submitting, setSubmitting] = useState(false);
+
   const onSubmit = handleSubmit(({ email }) => {
+    setSubmitting(true);
     fetch('/api/newsletter', {
       method: 'POST',
       body: JSON.stringify({ email }),
@@ -67,6 +59,7 @@ const NewsletterRegistration = (): JSX.Element => {
       })
       .finally(() => {
         reset();
+        setSubmitting(false);
       });
   });
 
@@ -84,14 +77,16 @@ const NewsletterRegistration = (): JSX.Element => {
             name="email"
             placeholder="Your email"
             aria-label="Your email"
-            ref={register({ required: true, pattern: EMAIL_REGEXP })}
+            ref={register}
           />
           <Button
             type="submit"
             colorScheme="primary"
             borderLeftRadius="0"
             flexShrink={0}
-            disabled={isSubmitted}
+            isLoading={submitting}
+            loadingText="Submitting"
+            w="36"
           >
             Register
           </Button>

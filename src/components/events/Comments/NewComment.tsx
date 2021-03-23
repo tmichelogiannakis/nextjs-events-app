@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import {
   Box,
   BoxProps,
@@ -14,40 +13,31 @@ import {
   useTheme,
   useToast
 } from '@chakra-ui/react';
-import Comment from '../../../types/comment';
+import CommentType, { commentSchema } from '../../../types/comment';
 import { EMAIL_REGEXP } from '../../../constants';
-
-const schema = yup.object().shape({
-  name: yup.string().required('Name is required'),
-  email: yup.string().email('Invalid email').required('Email is required'),
-  text: yup.string().required('Comment is required')
-});
-
-type FormValues = yup.InferType<typeof schema>;
+import { useState } from 'react';
 
 type NewCommentProps = BoxProps & {
-  onAddComment: (comment: Comment) => Promise<{ message: string }>;
+  onAddComment: (comment: CommentType) => Promise<{ message: string }>;
 };
 
 const NewComment = ({
   onAddComment,
   ...otherProps
 }: NewCommentProps): JSX.Element => {
+  const [submitting, setSubmitting] = useState(false);
+
   const theme = useTheme();
 
   const toast = useToast();
 
-  const {
-    register,
-    handleSubmit,
-    errors,
-    reset,
-    formState: { isSubmitted }
-  } = useForm<FormValues>({
-    resolver: yupResolver(schema)
+  const { register, handleSubmit, errors, reset } = useForm<CommentType>({
+    resolver: yupResolver(commentSchema)
   });
 
   const onSubmit = handleSubmit(data => {
+    setSubmitting(true);
+
     const toastId = toast({
       description: 'Your comment was submitted!',
       status: 'info'
@@ -75,6 +65,7 @@ const NewComment = ({
           toast.close(toastId);
         }
         reset();
+        setSubmitting(false);
       });
   });
 
@@ -190,7 +181,7 @@ const NewComment = ({
           variant="white"
           bg="white"
           color={theme.colors.primary[500]}
-          disabled={isSubmitted}
+          disabled={submitting}
         >
           Submit
         </Button>

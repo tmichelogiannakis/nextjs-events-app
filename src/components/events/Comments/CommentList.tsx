@@ -6,10 +6,10 @@ import {
   ListItem,
   useTheme
 } from '@chakra-ui/react';
-import Comment from '../../../types/comment';
+import CommentType from '../../../types/comment';
 
 type CommentListProps = ListProps & {
-  comments: Comment[];
+  comments: CommentType[];
 };
 
 const CommentList = ({
