@@ -16,7 +16,7 @@ const Comments = (props: CommentsProps): JSX.Element => {
 
   const { data } = useSWR(`/api/${eventId}/comments`);
 
-  const comments = useMemo(() => {
+  const comments: CommentType[] = useMemo(() => {
     return data?.comments;
   }, [data]);
 
@@ -45,10 +45,13 @@ const Comments = (props: CommentsProps): JSX.Element => {
           throw new Error(data.message || 'Something went wrong!');
         });
       })
-      .then(data => {
-        return mutate(`/api/comments/${eventId}`, data).then(() => ({
-          message: 'Your comment was saved!'
-        }));
+      .then(jsonData => {
+        const comments: CommentType[] = [...data?.comments, jsonData.comment];
+        return mutate(`/api/${eventId}/comments`, { comments }, false).then(
+          () => ({
+            message: 'Your comment was saved!'
+          })
+        );
       });
   };
 

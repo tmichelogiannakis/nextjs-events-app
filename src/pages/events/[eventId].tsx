@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import {
   Box,
   Container,
@@ -18,7 +18,9 @@ type EventDetailPageProps = {
   event: Event;
 };
 
-const EventDetailPage = ({ event }: EventDetailPageProps): JSX.Element => {
+const EventDetailPage: NextPage<EventDetailPageProps> = ({
+  event
+}): JSX.Element => {
   const theme = useTheme();
 
   const { id, title, image, date, location, description } = event;

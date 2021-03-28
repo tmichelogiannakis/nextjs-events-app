@@ -9,7 +9,6 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <SWRConfig
       value={{
-        refreshInterval: 3000,
         fetcher: (resource, init) =>
           fetch(resource, init).then(res => res.json())
       }}

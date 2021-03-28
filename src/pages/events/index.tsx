@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { Container } from '@chakra-ui/react';
 import EventList from '../../components/events/EventList/EventList';
@@ -10,7 +10,7 @@ type EventsPageProps = {
   events: Event[];
 };
 
-const EventsPage = ({ events }: EventsPageProps): JSX.Element => {
+const EventsPage: NextPage<EventsPageProps> = ({ events }): JSX.Element => {
   const router = useRouter();
 
   const handleSearchEvents = (year: number, month: number) => {

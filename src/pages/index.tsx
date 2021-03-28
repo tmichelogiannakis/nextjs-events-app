@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import { Container } from '@chakra-ui/react';
 import EventList from '../components/events/EventList/EventList';
 import NewsletterRegistration from '../components/events/NewsletterRegistration/NewsletterRegistration';
@@ -9,7 +9,7 @@ type HomePageProps = {
   events: Event[];
 };
 
-const HomePage = ({ events }: HomePageProps): JSX.Element => {
+const HomePage: NextPage<HomePageProps> = ({ events }): JSX.Element => {
   return (
     <Container maxW="container.sm" paddingY={4}>
       <NewsletterRegistration />

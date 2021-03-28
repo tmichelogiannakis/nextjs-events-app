@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import Link from 'next/link';
 import { Alert, Box, Button, Container, Heading, Text } from '@chakra-ui/react';
 import EventList from '../../components/events/EventList/EventList';
@@ -11,11 +11,11 @@ type FiltredEventsPageProps = {
   filters?: { numYear: number; numMonth: number };
 };
 
-const FiltredEventsPage = ({
+const FiltredEventsPage: NextPage<FiltredEventsPageProps> = ({
   invalidFilter,
   events,
   filters
-}: FiltredEventsPageProps): JSX.Element => {
+}): JSX.Element => {
   if (invalidFilter) {
     return (
       <Container maxW="container.sm" paddingY={4} textAlign="center">
